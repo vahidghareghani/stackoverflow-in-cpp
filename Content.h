@@ -3,7 +3,7 @@
 enum ContentType{
   QUESTION,
   ANSWER
-}
+};
 
 class Content {
 public:
