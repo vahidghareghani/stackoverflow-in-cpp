@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include "AbstractUser.h"
+#include "Content.h"
 
 class User : public AbstractUser {
 public:
@@ -26,9 +27,14 @@ public:
     static User& login(string username, string password);
     static User& signup(string username, string password, string email);
 
+public:
+    vector<Content> contents;
+
+public:
+  static vector<User> users;
+
 private:
     static string salt;
-    static vector<User> users;
 
 };
 

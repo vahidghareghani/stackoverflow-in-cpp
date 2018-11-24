@@ -9,7 +9,7 @@
 #include "Exceptions.h"
 #include <iostream>
 
-
+vector<Content> User::contents;
 vector<User> User::users;
 string User::salt;
 

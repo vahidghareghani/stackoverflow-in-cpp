@@ -81,9 +81,24 @@ int main() {
                 break;
             }
             case MenuState::LOGGED_IN: {
-                cout << "d.delete account\nl. logout\ne. exit\n";
+                cout << "d.delete account\nl. logout\na. ask\ns. see all questions\ne. exit\n";
                 cin >> choice;
                 switch (choice) {
+                    case 'a' : {
+                      string ques;
+                      cout << "Enter ur question: ";
+                      cin >> ques;
+                      loggedInUser.contents.emplace_back(ques, QUESTION);
+                    }
+                    case 's':{
+                        for (int i = 0; i < users.size(); i++) {
+                          for (int j = 0; j < contents.size(); j++) {
+                            if (users[i].contents[j].type == ContentType::QUESTION) {
+                              cout << users[i].contents[j].body << endl;
+                            }
+                          }
+                        }
+                    }
                     case 'd': {
                         try {
                             loggedInUser->deleteAccount();
