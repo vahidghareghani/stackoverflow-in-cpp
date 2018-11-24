@@ -9,7 +9,6 @@
 #include "Exceptions.h"
 #include <iostream>
 
-vector<Content> User::contents;
 vector<User> User::users;
 string User::salt;
 
@@ -71,12 +70,12 @@ User& User::signup(string username, string password, string email){
         }
     }
     //Create user
-    users.emplace_back(username, password, UserType::MEMBER);
+    users.emplace_back(username, password, email, UserType::MEMBER);
     return users[users.size() - 1];
 }
 
 void User::init(const string &salt) {
     User::salt = salt;
     users.reserve(20);
-    users.emplace_back("admin", "admin", UserType::ADMIN);
+    users.emplace_back("admin", "admin", "info@stack.com", UserType::ADMIN);
 }

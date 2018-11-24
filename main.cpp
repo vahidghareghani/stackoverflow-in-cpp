@@ -21,12 +21,12 @@ enum MenuState {
 
 int main() {
     User::init("SECRET_KEY");
-    User * loggedInUser = nullptr;
+    User *loggedInUser = nullptr;
     MenuState menuState = MenuState::START;
     string last_message;
 
     char choice;
-    while(menuState != MenuState::END) {
+    while (menuState != MenuState::END) {
         system(CLEAR);
         if (!last_message.empty())
             cout << last_message << endl;
@@ -43,7 +43,7 @@ int main() {
                             cin >> username;
                             cout << "Enter Password: ";
                             cin >> password;
-                            loggedInUser = &User::login(username,password);
+                            loggedInUser = &User::login(username, password);
                             menuState = MenuState::LOGGED_IN;
                         } catch (WrongUsernameOrPasswordException &e) {
                             last_message = e.what();
@@ -64,7 +64,7 @@ int main() {
                             last_message = "User signed up!\n";
                         } catch (UserAlreadyExistsException &e) {
                             last_message = e.what();
-                        } catch (EmailAlreadyExistsException &e){
+                        } catch (EmailAlreadyExistsException &e) {
                             last_message = e.what();
                         }
                         break;
@@ -81,23 +81,30 @@ int main() {
                 break;
             }
             case MenuState::LOGGED_IN: {
-                cout << "d.delete account\nl. logout\na. ask\ns. see all questions\ne. exit\n";
+                cout << "d. delete account\nl. logout\na. ask\ns. see all questions\ne. exit\n";
                 cin >> choice;
                 switch (choice) {
                     case 'a' : {
-                      string ques;
-                      cout << "Enter ur question: ";
-                      cin >> ques;
-                      loggedInUser.contents.emplace_back(ques, QUESTION);
+                        string ques;
+                        getchar();
+                        cout << "Enter ur question: ";
+//                        getchar();
+                        getline(cin, ques);
+                        loggedInUser->contents.emplace_back(ques, QUESTION);
+                        break;
                     }
-                    case 's':{
-                        for (int i = 0; i < users.size(); i++) {
-                          for (int j = 0; j < contents.size(); j++) {
-                            if (users[i].contents[j].type == ContentType::QUESTION) {
-                              cout << users[i].contents[j].body << endl;
+                    case 's': {
+                        for (int i = 0; i < User::users.size(); i++) {
+                            for (int j = 0; j < User::users[i].contents.size(); j++) {
+//                                cout << User::users[i].username << endl;
+                                if (User::users[i].contents[j].type == ContentType::QUESTION) {
+                                    cout << "bye";
+                                    cout << User::users[i].username << endl;
+                                    cout << User::users[i].contents[j].body << endl;
+                                }
                             }
-                          }
                         }
+                        break;
                     }
                     case 'd': {
                         try {
