@@ -22,6 +22,7 @@ public:
     virtual void deleteAccount() = 0;
     string username;
 protected:
+    string email;
     string password;
     UserType type;
 };

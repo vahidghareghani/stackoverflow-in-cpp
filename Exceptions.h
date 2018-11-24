@@ -19,6 +19,14 @@ private:
 
 };
 
+class EmailAlreadyExistsException: public std::exception{
+public:
+    const char *what() const throw(){
+        return message.c_str();
+    }
+private:
+    const std::string message = "Error: Email already exists!";
+}
 class WrongUsernameOrPasswordException : public std::exception {
 private:
     const std::string message = "Error: wrong username or password!";

@@ -52,15 +52,19 @@ int main() {
                     }
                     case '2': { // signup
                         try {
-                            string username, password;
+                            string username, password, email;
                             cout << "Enter Username: ";
                             cin >> username;
                             cout << "Enter Password: ";
                             cin >> password;
-                            loggedInUser = &User::signup(username, password);
+                            cout << "Enter Email: ";
+                            cin >> email;
+                            loggedInUser = &User::signup(username, password, email);
                             menuState = MenuState::LOGGED_IN;
                             last_message = "User signed up!\n";
                         } catch (UserAlreadyExistsException &e) {
+                            last_message = e.what();
+                        } catch (EmailAlreadyExistsException &e){
                             last_message = e.what();
                         }
                         break;
