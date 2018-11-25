@@ -61,7 +61,7 @@ int main() {
                             cin >> email;
                             loggedInUser = &User::signup(username, password, email);
                             menuState = MenuState::LOGGED_IN;
-                            last_message = "User signed up!\n";
+                            last_message = "User signed up!";
                         } catch (UserAlreadyExistsException &e) {
                             last_message = e.what();
                         } catch (EmailAlreadyExistsException &e) {
@@ -88,7 +88,6 @@ int main() {
                         string ques;
                         getchar();
                         cout << "Enter ur question: ";
-//                        getchar();
                         getline(cin, ques);
                         loggedInUser->contents.emplace_back(ques, QUESTION);
                         break;
@@ -97,9 +96,7 @@ int main() {
                         for (int i = 0; i < User::users.size(); i++) {
                             for (int j = 0; j < User::users[i].contents.size(); j++) {
                                 if (User::users[i].contents[j].type == ContentType::QUESTION) {
-                                    cout << "bye";
-                                    cout << User::users[i].username << endl;
-                                    cout << User::users[i].contents[j].body << endl;
+                                    cout << to_string(i+1) << "-" << to_string(j+1) << ". " << User::users[i].contents[j].body << endl;
                                 }
                             }
                         }
@@ -120,7 +117,7 @@ int main() {
                     case 'l': { // logout
                         loggedInUser = nullptr;
                         menuState = MenuState::START;
-                        last_message = "GOOD BYE\n";
+                        last_message = "GOOD BYE!";
                         break;
                     }
                     case 'e': { // exit
@@ -140,3 +137,4 @@ int main() {
     cout << "GOODBYE" << endl;
     return 0;
 }
+
