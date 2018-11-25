@@ -10,7 +10,7 @@
 #include "User.h"
 
 
-int x=0;
+int x=0, flag=1;
 Logger::Logger() {}
 
 Logger& Logger::getInstance() {
@@ -30,11 +30,14 @@ std::ofstream& operator <<(std::ofstream& of, User& user){
 }
 
 void Logger::log(User& user) {
-    ifstream fi("log.txt");
-    fi >> x;
-    x++;
-    ofstream fo("log.txt");
-    fo << x;
+    if(flag){
+        ifstream fi("log.txt");
+        fi >> x;
+        x++;
+        ofstream fo("log.txt");
+        fo << x;
+        flag=0;
+    }
     fout << user << endl;
 }
 
