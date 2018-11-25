@@ -24,8 +24,8 @@ std::ofstream& operator <<(std::ofstream& of, User& user){
     std::time_t tt;
     tt = std::chrono::system_clock::to_time_t(today);
     std::string file = "Log." + to_string(x) + ".txt";
-    of.open(file);
-    of << user.email << ctime(&tt);
+    of.open(file, std::ios_base::app);
+    of << user.email << " " << ctime(&tt);
     of.close();
     return of;
 }
