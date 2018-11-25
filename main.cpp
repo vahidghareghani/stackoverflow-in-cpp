@@ -3,6 +3,7 @@
 #include "AbstractUser.h"
 #include "Exceptions.h"
 #include "User.h"
+#include "logger.h"
 
 #ifdef _WIN32
 #define CLEAR "cls"
@@ -48,6 +49,7 @@ int main() {
                         } catch (WrongUsernameOrPasswordException &e) {
                             last_message = e.what();
                         }
+                        Logger::getInstance().log(*loggedInUser);
                         break;
                     }
                     case '2': { // signup
@@ -93,10 +95,12 @@ int main() {
                         break;
                     }
                     case 's': {
+                        int q = 1;
                         for (int i = 0; i < User::users.size(); i++) {
                             for (int j = 0; j < User::users[i].contents.size(); j++) {
                                 if (User::users[i].contents[j].type == ContentType::QUESTION) {
-                                    cout << to_string(i+1) << "-" << to_string(j+1) << ". " << User::users[i].contents[j].body << endl;
+                                    cout << to_string(q) << ". " << User::users[i].contents[j].body << endl;
+                                    q++;
                                 }
                             }
                         }

@@ -1,9 +1,4 @@
 #include <utility>
-
-//
-// Created by spsina on 11/8/18.
-//
-
 #include <sstream>
 #include "User.h"
 #include "Exceptions.h"

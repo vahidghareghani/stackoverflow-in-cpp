@@ -21,8 +21,8 @@ public:
     virtual bool authenticate(string username, string password) = 0;
     virtual void deleteAccount() = 0;
     string username;
-protected:
     string email;
+protected:
     string password;
     UserType type;
 };
