@@ -84,7 +84,7 @@ int main() {
                 break;
             }
             case MenuState::LOGGED_IN: {
-                cout << "d. delete account\nl. logout\na. ask\ns. see all questions\ne. exit\n";
+                cout << "d. delete account\nl. logout\na. ask\ns. see all questions\nm. my questions\ne. exit\n";
                 cin >> choice;
                 switch (choice) {
                     case 'a' : {
@@ -103,6 +103,16 @@ int main() {
                                     cout << to_string(q) << ". " << User::users[i].contents[j].body << endl;
                                     q++;
                                 }
+                            }
+                        }
+                        break;
+                    }
+                    case 'm':{
+                        int count = 1;
+                        for (int i = 0; i <loggedInUser->contents.size() ; ++i) {
+                            if (loggedInUser->contents[i].type == ContentType::QUESTION){
+                                cout << to_string(count) << ". " <<loggedInUser->contents[i].body<<endl;
+                                count++;
                             }
                         }
                         break;
