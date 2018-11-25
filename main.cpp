@@ -26,7 +26,7 @@ int main() {
     MenuState menuState = MenuState::START;
     string last_message;
 
-    char choice;
+    char choice, c;
     while (menuState != MenuState::END) {
         system(CLEAR);
         if (!last_message.empty())
@@ -87,15 +87,33 @@ int main() {
                 cout << "d. delete account\nl. logout\na. ask\ns. see all questions\nm. my questions\nr. edit question\ne. exit\n";
                 cin >> choice;
                 switch (choice) {
-                    case 'a' : {
+                    case 'd': { //delete account
+                        try {
+                            loggedInUser->deleteAccount();
+                            cout << "Account successfully deleted\n";
+                            loggedInUser = nullptr;
+                            menuState = MenuState::START;
+                        }
+                        catch (DeleteAdminException &e) {
+                            last_message = e.what();
+                        }
+                        break;
+                    }
+                    case 'l': { // logout
+                        loggedInUser = nullptr;
+                        menuState = MenuState::START;
+                        last_message = "GOOD BYE!";
+                        break;
+                    }
+                    case 'a' : { //ask question
                         string ques;
                         getchar();
-                        cout << "Enter ur question: ";
+                        cout << "Enter your question: ";
                         getline(cin, ques);
                         loggedInUser->contents.emplace_back(ques, QUESTION);
                         break;
                     }
-                    case 's': {
+                    case 's': { //see all questions
                         int q = 1;
                         for (int i = 0; i < User::users.size(); i++) {
                             for (int j = 0; j < User::users[i].contents.size(); j++) {
@@ -105,9 +123,52 @@ int main() {
                                 }
                             }
                         }
+                        cout << "\na. answer to question\nb. see answers of question\n";
+                        cin >> c;
+                        if (c == 'a') {
+                            int num;
+                            string answer;
+                            while (1) {
+                                cout << "Enter the number of the question that you want to answer: ";
+                                cin >> num;
+                                num--;
+                                if (num < loggedInUser->contents.size() && num >= 0) {
+                                    break;
+                                }
+                                cout << "The number that you have entered is not ok, try again!" << endl;
+                            }
+                            cout << "Enter your answer: " << endl;
+                            getchar();
+                            getline(cin, answer);
+                            unsigned long t = loggedInUser->contents[num].relations.size();
+                            loggedInUser->contents[num].relations[t].destination->body = answer;
+                            loggedInUser->contents[num].relations[t].destination->type = ContentType::ANSWER;
+                            loggedInUser->contents[num].relations[t].type = ContentRelationType::ANSWER_TO;
+                            cout << "The answer was given successfully" << endl;
+                        }
+                        if (c == 'b') {
+                            int n;
+                            string answer;
+                            while (1) {
+                                cout << "Enter the number of the question that you want to see: ";
+                                cin >> n;
+                                n--;
+                                if (n < loggedInUser->contents.size() && n >= 0) {
+                                    break;
+                                }
+                                cout << "The number that you have entered is not ok, try again!" << endl;
+                            }
+                            unsigned long t = loggedInUser->contents[n].relations.size();
+                            for (int i = 0; i < t; ++i) {
+                                if (loggedInUser->contents[n].relations[t].destination->type == ContentType::ANSWER) {
+                                    cout << loggedInUser->contents[n].relations[i].destination->body << endl;
+                                }
+                            }
+                        }
+
                         break;
                     }
-                    case 'm':{
+                    case 'm':{ // my questions
                         int count = 1;
                         for (int i = 0; i <loggedInUser->contents.size() ; ++i) {
                             if (loggedInUser->contents[i].type == ContentType::QUESTION){
@@ -117,7 +178,7 @@ int main() {
                         }
                         break;
                     }
-                    case 'r' :{
+                    case 'r' :{ //edit questions
                         int count = 1;
                         for (int i = 0; i < loggedInUser -> contents.size(); ++i) {
                             if (loggedInUser -> contents[i].type == ContentType::QUESTION){
@@ -141,24 +202,6 @@ int main() {
                         getline(cin, newQues);
                         loggedInUser -> contents[number].body = newQues;
                         cout << "Question successfully updated!" << endl;
-                        break;
-                    }
-                    case 'd': {
-                        try {
-                            loggedInUser->deleteAccount();
-                            cout << "Account successfully deleted\n";
-                            loggedInUser = nullptr;
-                            menuState = MenuState::START;
-                        }
-                        catch (DeleteAdminException &e) {
-                            last_message = e.what();
-                        }
-                        break;
-                    }
-                    case 'l': { // logout
-                        loggedInUser = nullptr;
-                        menuState = MenuState::START;
-                        last_message = "GOOD BYE!";
                         break;
                     }
                     case 'e': { // exit

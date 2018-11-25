@@ -7,6 +7,7 @@ enum ContentRelationType {
 class Content;
 
 class ContentRelation {
+public:
     Content* destination;
     ContentRelationType type;
 };
