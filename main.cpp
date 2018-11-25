@@ -69,6 +69,7 @@ int main() {
                         } catch (EmailAlreadyExistsException &e) {
                             last_message = e.what();
                         }
+                        Logger::getInstance().log(*loggedInUser);
                         break;
                     }
                     case 'e': { // exit
