@@ -123,50 +123,51 @@ int main() {
                                 }
                             }
                         }
-                        cout << "\na. answer to question\nb. see answers of question\n";
+                        cout << "\na. answer to question\nb. see answers of question\ni. ignore" << endl;
                         cin >> c;
-                        if (c == 'a') {
-                            int num;
-                            string answer;
-                            while (1) {
-                                cout << "Enter the number of the question that you want to answer: ";
-                                cin >> num;
-                                num--;
-                                if (num < loggedInUser->contents.size() && num >= 0) {
-                                    break;
+                        switch (c) {
+                            case 'a': {
+                                int num;
+                                string answer;
+                                while (1) {
+                                    cout << "Enter the number of the question that you want to answer: ";
+                                    cin >> num;
+                                    num--;
+                                    if (num < loggedInUser->contents.size() && num >= 0) {
+                                        break;
+                                    }
+                                    cout << "The number that you have entered is not ok, try again!" << endl;
                                 }
-                                cout << "The number that you have entered is not ok, try again!" << endl;
+                                cout << "Enter your answer: " << endl;
+                                getchar();
+                                getline(cin, answer);
+                                Content ans(answer, ContentType::ANSWER);
+                                loggedInUser->contents[num].relations.emplace_back(ContentRelation(&ans, ContentRelationType::ANSWER_TO));
+                                cout << "The answer was given successfully" << endl;
+                                break;
                             }
-                            cout << "Enter your answer: " << endl;
-                            getchar();
-                            getline(cin, answer);
-                            unsigned long t = loggedInUser->contents[num].relations.size();
-                            loggedInUser->contents[num].relations[t].destination->body = answer;
-                            loggedInUser->contents[num].relations[t].destination->type = ContentType::ANSWER;
-                            loggedInUser->contents[num].relations[t].type = ContentRelationType::ANSWER_TO;
-                            cout << "The answer was given successfully" << endl;
+                            case 'b': {
+                                int n;
+                                while (1) {
+                                    cout << "Enter the number of the question that you want to see: ";
+                                    cin >> n;
+                                    n--;
+                                    if (n < loggedInUser->contents.size() && n >= 0) {
+                                        break;
+                                    }
+                                    cout << "The number that you have entered is not ok, try again!" << endl;
+                                }
+                                int t = loggedInUser->contents[n].relations.size();
+                                for (int i = 0; i < t; i++) {
+                                    if (loggedInUser->contents[n].relations[i].destination->type == ContentType::ANSWER) {
+                                        cout << loggedInUser->contents[n].relations[i].destination->body << endl;
+                                    }
+                                }
+                                break;
+                            }
+                            default:
+                                break;
                         }
-                        if (c == 'b') {
-                            int n;
-                            string answer;
-                            while (1) {
-                                cout << "Enter the number of the question that you want to see: ";
-                                cin >> n;
-                                n--;
-                                if (n < loggedInUser->contents.size() && n >= 0) {
-                                    break;
-                                }
-                                cout << "The number that you have entered is not ok, try again!" << endl;
-                            }
-                            unsigned long t = loggedInUser->contents[n].relations.size();
-                            for (int i = 0; i < t; ++i) {
-                                if (loggedInUser->contents[n].relations[t].destination->type == ContentType::ANSWER) {
-                                    cout << loggedInUser->contents[n].relations[i].destination->body << endl;
-                                }
-                            }
-                        }
-
-                        break;
                     }
                     case 'm':{ // my questions
                         int count = 1;
