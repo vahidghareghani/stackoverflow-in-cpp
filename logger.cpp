@@ -20,12 +20,14 @@ Logger& Logger::getInstance() {
 
 
 std::ofstream& operator <<(std::ofstream& of, User& user){
-    std::string file = "Log." + to_string(x) + ".txt";
-    ofstream fout(file);
     std::chrono::system_clock::time_point today = std::chrono::system_clock::now();
     std::time_t tt;
     tt = std::chrono::system_clock::to_time_t(today);
-    of << user.email << ctime(&tt) << endl;
+    std::string file = "Log." + to_string(x) + ".txt";
+    ofstream fout;
+    fout.open(file);
+    of << user.email << ctime(&tt);
+    fout.close();
     return of;
 }
 
@@ -33,10 +35,12 @@ void Logger::log(User& user) {
     if(flag){
         ifstream fi("log.txt");
         fi >> x;
+        fi.close();
         x++;
         ofstream fo("log.txt");
         fo << x;
         flag=0;
+        fo.close();
     }
     fout << user << endl;
 }
