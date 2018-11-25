@@ -84,7 +84,7 @@ int main() {
                 break;
             }
             case MenuState::LOGGED_IN: {
-                cout << "d. delete account\nl. logout\na. ask\ns. see all questions\nm. my questions\ne. exit\n";
+                cout << "d. delete account\nl. logout\na. ask\ns. see all questions\nm. my questions\nr. edit question\ne. exit\n";
                 cin >> choice;
                 switch (choice) {
                     case 'a' : {
@@ -115,6 +115,32 @@ int main() {
                                 count++;
                             }
                         }
+                        break;
+                    }
+                    case 'r' :{
+                        int count = 1;
+                        for (int i = 0; i < loggedInUser -> contents.size(); ++i) {
+                            if (loggedInUser -> contents[i].type == ContentType::QUESTION){
+                                cout << to_string(count) << ". " <<loggedInUser->contents[i].body<<endl;
+                                count++;
+                            }
+                        }
+                        int number;
+                        while (1) {
+                            cout << "Enter the number of the question that you want to edit: ";
+                            cin >> number;
+                            number--;
+                            if (number < loggedInUser -> contents.size() && number >= 0) {
+                                break;
+                            }
+                            cout << "The number that you have entered is not ok, try again!" << endl;
+                        }
+                        string newQues;
+                        cout << "Enter the edited question: ";
+                        getchar();
+                        getline(cin, newQues);
+                        loggedInUser -> contents[number].body = newQues;
+                        cout << "Question successfully updated!" << endl;
                         break;
                     }
                     case 'd': {
