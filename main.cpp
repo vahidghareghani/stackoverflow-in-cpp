@@ -96,7 +96,6 @@ int main() {
                     case 's': {
                         for (int i = 0; i < User::users.size(); i++) {
                             for (int j = 0; j < User::users[i].contents.size(); j++) {
-//                                cout << User::users[i].username << endl;
                                 if (User::users[i].contents[j].type == ContentType::QUESTION) {
                                     cout << "bye";
                                     cout << User::users[i].username << endl;
