@@ -110,7 +110,7 @@ int main() {
                         getchar();
                         cout << "Enter your question: ";
                         getline(cin, ques);
-                        loggedInUser->contents.emplace_back(ques, QUESTION);
+                        loggedInUser->contents.emplace_back(ques, ContentType::QUESTION);
                         break;
                     }
                     case 's': { //see all questions
@@ -129,19 +129,41 @@ int main() {
                             case 'a': {
                                 int num;
                                 string answer;
+
+                                //while for to check validation.
                                 while (1) {
                                     cout << "Enter the number of the question that you want to answer: ";
                                     cin >> num;
                                     num--;
-                                    if (num < loggedInUser->contents.size() && num >= 0) {
+                                    if (num < q && num >= 0) {
                                         break;
                                     }
                                     cout << "The number that you have entered is not ok, try again!" << endl;
                                 }
+
+                                //get answer.
                                 cout << "Enter your answer: " << endl;
                                 getchar();
                                 getline(cin, answer);
+
+                                //make content.
                                 Content ans(answer, ContentType::ANSWER);
+
+                                //find index of question.
+                                int index=1;
+                                for (int i = 0; i < User::users.size(); i++) {
+                                    for (int j = 0; j < User::users[i].contents.size(); j++) {
+                                        if (User::users[i].contents[j].type == ContentType::QUESTION) {
+                                            if(index==num){
+                                                break;
+                                            } else{
+                                                index++;
+                                            }
+                                        }
+                                    }
+                                }
+                                //we find the question by i and j.
+
                                 loggedInUser->contents[num].relations.emplace_back(ContentRelation(&ans, ContentRelationType::ANSWER_TO));
                                 cout << "The answer was given successfully" << endl;
                                 break;
