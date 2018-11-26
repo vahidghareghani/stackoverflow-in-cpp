@@ -123,7 +123,7 @@ int main() {
                                 }
                             }
                         }
-                        cout << "\na. answer to question\nb. see answers of question\ni. ignore" << endl;
+                        cout << "\na. answer to question\ns. see answers of question\ni. ignore" << endl;
                         cin >> c;
                         switch (c) {
                             case 'a': {
@@ -148,27 +148,21 @@ int main() {
 
                                 //make content.
                                 Content ans(answer, ContentType::ANSWER);
-
-                                //find index of question.
-                                int index=1;
+                                //Establishing a relationship 1
                                 for (int i = 0; i < User::users.size(); i++) {
                                     for (int j = 0; j < User::users[i].contents.size(); j++) {
-                                        if (User::users[i].contents[j].type == ContentType::QUESTION) {
-                                            if(index==num){
-                                                break;
-                                            } else{
-                                                index++;
-                                            }
+                                        if (User::users[i].contents[j].body == answer) {
+                                            User::users[i].contents[j].relations.emplace_back(ContentRelation(&ans, ContentRelationType::ANSWER_TO));
                                         }
                                     }
                                 }
-                                //we find the question by i and j.
-
-                                loggedInUser->contents[num].relations.emplace_back(ContentRelation(&ans, ContentRelationType::ANSWER_TO));
+                                //Establishing a relationship 2
+                                int t = loggedInUser->contents.size(); // int or unsigned long ? (if you want change it, you can :/)
+                                loggedInUser->contents[t].relations.emplace_back(ContentRelation(&ans, ContentRelationType::ANSWER_TO));
                                 cout << "The answer was given successfully" << endl;
                                 break;
                             }
-                            case 'b': {
+                            case 's': {
                                 int n;
                                 while (1) {
                                     cout << "Enter the number of the question that you want to see: ";
@@ -179,7 +173,7 @@ int main() {
                                     }
                                     cout << "The number that you have entered is not ok, try again!" << endl;
                                 }
-                                int t = loggedInUser->contents[n].relations.size();
+                                int t = loggedInUser->contents[n].relations.size(); // int or unsigned long ? (if you want change it, you can :/)
                                 for (int i = 0; i < t; i++) {
                                     if (loggedInUser->contents[n].relations[i].destination->type == ContentType::ANSWER) {
                                         cout << loggedInUser->contents[n].relations[i].destination->body << endl;
