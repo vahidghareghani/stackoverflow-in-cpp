@@ -4,11 +4,11 @@
 #include "Exceptions.h"
 #include <iostream>
 
-vector<User> User::users;
-string User::salt;
+std::vector<User> User::users;
+std::string User::salt;
 
 
-User::User(string username, string password, string email, UserType type){
+User::User(std::string username, string password, string email, UserType type){
     lower(username);
     this->username = username;
     set_password(std::move(password));

@@ -9,7 +9,6 @@ class Logger {
 public:
     static Logger& getInstance();
 public:
-//    void readAndWriteX();
     void log(User& user);
 private:
     Logger();

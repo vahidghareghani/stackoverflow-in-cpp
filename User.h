@@ -1,9 +1,4 @@
-//
-// Created by spsina on 11/8/18.
-//
-
-#ifndef STACKOVERFLOW_IN_CPP1_USER_H
-#define STACKOVERFLOW_IN_CPP1_USER_H
+#pragma once
 
 #include <iostream>
 #include "AbstractUser.h"
@@ -12,7 +7,7 @@
 class User : public AbstractUser {
 public:
     User(string username, string password, string email, UserType type);
-
+    friend std::ofstream& operator <<(std::ofstream& of, User& user);
     static void init(const string &salt);
 
 public:
@@ -31,11 +26,10 @@ public:
     vector<Content> contents;
 
 public:
-  static vector<User> users;
+    static vector<User> users;
 
 private:
     static string salt;
 
 };
 
-#endif //STACKOVERFLOW_IN_CPP1_USER_H

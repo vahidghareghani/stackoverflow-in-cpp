@@ -8,7 +8,7 @@ class Content;
 
 class ContentRelation {
 public:
-    ContentRelation(Content* destination, ContentRelationType type):type(type), destination(destination) {};
+    ContentRelation(Content* destination, ContentRelationType type):type(type), destination(destination){ };
     Content* destination;
     ContentRelationType type;
 };

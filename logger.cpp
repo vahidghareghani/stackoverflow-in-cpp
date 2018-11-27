@@ -8,6 +8,7 @@
 #include <vector>
 #include "logger.h"
 #include "User.h"
+#include "AbstractUser.h"
 
 
 int x=0, flag=1;
@@ -43,4 +44,5 @@ void Logger::log(User& user) {
     }
     fout << user << endl;
 }
+
 

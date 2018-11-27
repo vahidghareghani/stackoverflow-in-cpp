@@ -165,6 +165,7 @@ int main() {
                                 }
                                 //Establishing a relationship 2
                                 int t = loggedInUser->contents.size();
+                                cout << "t= " << t << endl;
                                 Content ques(question, ContentType::QUESTION);
                                 loggedInUser->contents.emplace_back(ans);
                                 loggedInUser->contents[t-1].relations.emplace_back(ContentRelation(&ques, ContentRelationType::ANSWER_TO));
