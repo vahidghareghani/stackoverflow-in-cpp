@@ -148,7 +148,6 @@ int main() {
 
                                 //make content.
                                 Content ans(answer, ContentType::ANSWER);
-
                                 //Establishing a relationship 1
                                 int index=1;
                                 string question;
@@ -167,7 +166,8 @@ int main() {
                                 //Establishing a relationship 2
                                 int t = loggedInUser->contents.size();
                                 Content ques(question, ContentType::QUESTION);
-                                loggedInUser->contents[t].relations.emplace_back(ContentRelation(&ques, ContentRelationType::ANSWER_TO));
+                                loggedInUser->contents.emplace_back(ans);
+                                loggedInUser->contents[t-1].relations.emplace_back(ContentRelation(&ques, ContentRelationType::ANSWER_TO));
                                 cout << "The answer was given successfully" << endl;
                                 break;
                             }
@@ -182,10 +182,20 @@ int main() {
                                     }
                                     cout << "The number that you have entered is not ok, try again!" << endl;
                                 }
-                                int t = loggedInUser->contents[n].relations.size(); // int or unsigned long ? (if you want change it, you can :/)
-                                for (int i = 0; i < t; i++) {
-                                    if (loggedInUser->contents[n].relations[i].destination->type == ContentType::ANSWER) {
-                                        cout << loggedInUser->contents[n].relations[i].destination->body << endl;
+                                int index=1;
+                                for (int i = 0; i < User::users.size(); i++) {
+                                    for (int j = 0; j < User::users[i].contents.size(); j++) {
+                                        if (User::users[i].contents[j].type == ContentType::QUESTION) {
+                                            if(index==n){
+                                                for (int k = 0; k < User::users[i].contents[j].relations.size(); k++) {
+                                                    if (User::users[i].contents[j].relations[k].destination->type == ContentType::ANSWER){
+                                                        cout << k+1 << User::users[i].contents[j].relations[k].destination->body << endl;
+                                                    }
+                                                }
+                                            } else{
+                                                index++;
+                                            }
+                                        }
                                     }
                                 }
                                 break;
