@@ -25,7 +25,7 @@ int main() {
     User *loggedInUser = nullptr;
     MenuState menuState = MenuState::START;
     string last_message;
-
+    
     char choice, c;
     while (menuState != MenuState::END) {
         system(CLEAR);
@@ -129,7 +129,7 @@ int main() {
                             case 'a': {
                                 int num;
                                 string answer;
-
+                                
                                 //while for to check validation.
                                 while (1) {
                                     cout << "Enter the number of the question that you want to answer: ";
@@ -140,16 +140,16 @@ int main() {
                                     }
                                     cout << "The number that you have entered is not ok, try again!" << endl;
                                 }
-
+                                
                                 //get answer.
                                 cout << "Enter your answer: " << endl;
                                 getchar();
                                 getline(cin, answer);
-
+                                
                                 //make content.
                                 Content ans(answer, ContentType::ANSWER);
                                 //Establishing a relationship 1
-                                int index=1;
+                                int index=0, rel=0;
                                 string question;
                                 for (int i = 0; i < User::users.size(); i++) {
                                     for (int j = 0; j < User::users[i].contents.size(); j++) {
@@ -157,18 +157,22 @@ int main() {
                                             if(index==num){
                                                 question = User::users[i].contents[j].body;
                                                 User::users[i].contents[j].relations.emplace_back(ContentRelation(&ans, ContentRelationType::ANSWER_TO));
+                                                rel = 1;
+                                                break;
                                             } else{
                                                 index++;
                                             }
                                         }
                                     }
+                                    if (rel) {
+                                        break;
+                                    }
                                 }
                                 //Establishing a relationship 2
                                 int t = loggedInUser->contents.size();
-                                cout << "t= " << t << endl;
                                 Content ques(question, ContentType::QUESTION);
                                 loggedInUser->contents.emplace_back(ans);
-                                loggedInUser->contents[t-1].relations.emplace_back(ContentRelation(&ques, ContentRelationType::ANSWER_TO));
+                                loggedInUser->contents[t].relations.emplace_back(ContentRelation(&ques, ContentRelationType::ANSWER_TO));
                                 cout << "The answer was given successfully" << endl;
                                 break;
                             }
@@ -183,14 +187,14 @@ int main() {
                                     }
                                     cout << "The number that you have entered is not ok, try again!" << endl;
                                 }
-                                int index=1;
+                                int index=0;
                                 for (int i = 0; i < User::users.size(); i++) {
                                     for (int j = 0; j < User::users[i].contents.size(); j++) {
                                         if (User::users[i].contents[j].type == ContentType::QUESTION) {
                                             if(index==n){
                                                 for (int k = 0; k < User::users[i].contents[j].relations.size(); k++) {
                                                     if (User::users[i].contents[j].relations[k].destination->type == ContentType::ANSWER){
-                                                        cout << k+1 << User::users[i].contents[j].relations[k].destination->body << endl;
+                                                        cout << k+1 << ". " << User::users[i].contents[j].relations[k].destination->body << endl;
                                                     }
                                                 }
                                             } else{
@@ -249,7 +253,7 @@ int main() {
                         last_message = "Unknown Input\n";
                         break;
                     }
-
+                        
                 }
             }
         }
