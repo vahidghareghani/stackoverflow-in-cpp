@@ -148,17 +148,26 @@ int main() {
 
                                 //make content.
                                 Content ans(answer, ContentType::ANSWER);
+
                                 //Establishing a relationship 1
+                                int index=1;
+                                string question;
                                 for (int i = 0; i < User::users.size(); i++) {
                                     for (int j = 0; j < User::users[i].contents.size(); j++) {
-                                        if (User::users[i].contents[j].body == answer) {
-                                            User::users[i].contents[j].relations.emplace_back(ContentRelation(&ans, ContentRelationType::ANSWER_TO));
+                                        if (User::users[i].contents[j].type == ContentType::QUESTION) {
+                                            if(index==num){
+                                                question = User::users[i].contents[j].body;
+                                                User::users[i].contents[j].relations.emplace_back(ContentRelation(&ans, ContentRelationType::ANSWER_TO));
+                                            } else{
+                                                index++;
+                                            }
                                         }
                                     }
                                 }
                                 //Establishing a relationship 2
-                                int t = loggedInUser->contents.size(); // int or unsigned long ? (if you want change it, you can :/)
-                                loggedInUser->contents[t].relations.emplace_back(ContentRelation(&ans, ContentRelationType::ANSWER_TO));
+                                int t = loggedInUser->contents.size();
+                                Content ques(question, ContentType::QUESTION);
+                                loggedInUser->contents[t].relations.emplace_back(ContentRelation(&ques, ContentRelationType::ANSWER_TO));
                                 cout << "The answer was given successfully" << endl;
                                 break;
                             }
