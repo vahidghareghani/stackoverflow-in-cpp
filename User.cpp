@@ -7,7 +7,7 @@
 std::vector<User> User::users;
 std::string User::salt;
 
-
+//This is Amin!
 User::User(std::string username, string password, string email, UserType type){
     lower(username);
     this->username = username;
