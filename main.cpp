@@ -208,6 +208,7 @@ int main() {
                             default:
                                 break;
                         }
+                        break;
                     }
                     case 'm':{ // my questions
                         int count = 1;
