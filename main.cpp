@@ -25,7 +25,7 @@ int main() {
     User *loggedInUser = nullptr;
     MenuState menuState = MenuState::START;
     string last_message;
-    
+
     char choice, c;
     while (menuState != MenuState::END) {
         system(CLEAR);
@@ -88,12 +88,13 @@ int main() {
                 // calculate number of questions of logged in user
                 int number_of_questions = 0;
                 for (int l = 0; l < loggedInUser->contents.size(); l++) {
-                    if (loggedInUser->contents[l].type == ContentType::QUESTION){
+                    if (loggedInUser->contents[l].type == ContentType::QUESTION) {
                         number_of_questions++;
                     }
                 }
 
-                cout << "d. delete account\nl. logout\na. ask\ns. see all questions\nm. my questions\nr. edit question\ne. exit\n";
+                cout
+                        << "d. delete account\nl. logout\na. ask\ns. see all questions\nm. my questions\nr. edit question\ne. exit\n";
                 cin >> choice;
                 switch (choice) {
                     case 'd': { //delete account
@@ -138,7 +139,7 @@ int main() {
                             case 'a': {
                                 int num;
                                 string answer;
-                                
+
                                 //while for to check validation.
                                 while (1) {
                                     cout << "Enter the number of the question that you want to answer: ";
@@ -149,27 +150,28 @@ int main() {
                                     }
                                     cout << "The number that you have entered is not ok, try again!" << endl;
                                 }
-                                
+
                                 //get answer.
                                 cout << "Enter your answer: " << endl;
                                 getchar();
                                 getline(cin, answer);
-                                
+
                                 //make answer content for relationship 1
                                 Content ans(answer, ContentType::ANSWER);
 
                                 //Establishing a relationship 1
-                                int index=0, rel=0;
+                                int index = 0, rel = 0;
                                 string question;
                                 for (int i = 0; i < User::users.size(); i++) {
                                     for (int j = 0; j < User::users[i].contents.size(); j++) {
                                         if (User::users[i].contents[j].type == ContentType::QUESTION && index <= num) {
-                                            if(index==num){
+                                            if (index == num) {
                                                 question = User::users[i].contents[j].body;
-                                                User::users[i].contents[j].relations.emplace_back(ContentRelation(&ans, ContentRelationType::ANSWER_TO));
+                                                User::users[i].contents[j].relations.emplace_back(
+                                                        ContentRelation(&ans, ContentRelationType::ANSWER_TO));
                                                 rel = 1;
                                                 break;
-                                            } else{
+                                            } else {
                                                 index++;
                                             }
                                         }
@@ -183,7 +185,8 @@ int main() {
                                 // make question content for relationship 2
                                 Content ques(question, ContentType::QUESTION);
                                 loggedInUser->contents.emplace_back(ans);
-                                loggedInUser->contents[t].relations.emplace_back(ContentRelation(&ques, ContentRelationType::ANSWER_TO));
+                                loggedInUser->contents[t].relations.emplace_back(
+                                        ContentRelation(&ques, ContentRelationType::ANSWER_TO));
                                 cout << "The answer was given successfully" << endl;
                                 break;
                             }
@@ -198,23 +201,27 @@ int main() {
                                     }
                                     cout << "The number that you have entered is not ok, try again!" << endl;
                                 }
-                                int index=0;
+                                int index = 0;
                                 // search and find question then print answers
                                 for (int i = 0; i < User::users.size(); i++) {
                                     for (int j = 0; j < User::users[i].contents.size(); j++) {
                                         if (User::users[i].contents[j].type == ContentType::QUESTION && index <= n) {
-                                            if(index==n){
+                                            if (index == n) {
                                                 User::users[i].contents[j].visited();
                                                 cout << "Question:" << endl;
                                                 cout << User::users[i].contents[j].body << endl;
-                                                cout << "This question has been visited " << User::users[i].contents[j].visits << " time(s)!" << endl;
+                                                cout << "This question has been visited "
+                                                     << User::users[i].contents[j].visits << " time(s)!" << endl;
                                                 cout << "Answers:" << endl;
                                                 for (int k = 0; k < User::users[i].contents[j].relations.size(); k++) {
-                                                    if (User::users[i].contents[j].relations[k].destination->type == ContentType::ANSWER){
-                                                        cout << k+1 << ". " << User::users[i].contents[j].relations[k].destination->body << endl;
+                                                    if (User::users[i].contents[j].relations[k].destination->type ==
+                                                        ContentType::ANSWER) {
+                                                        cout << k + 1 << ". "
+                                                             << User::users[i].contents[j].relations[k].destination->body
+                                                             << endl;
                                                     }
                                                 }
-                                            } else{
+                                            } else {
                                                 index++;
                                             }
                                         }
@@ -222,26 +229,93 @@ int main() {
                                 }
                                 break;
                             }
+
+
+
                             default:
                                 break;
                         }
                         break;
                     }
-                    case 'm':{ // my questions
+
+                    case 'm': { // my questions
+                        bool hasQuestion = false;
                         int count = 1;
-                        for (int i = 0; i <loggedInUser->contents.size() ; ++i) {
-                            if (loggedInUser->contents[i].type == ContentType::QUESTION){
-                                cout << to_string(count) << ". " <<loggedInUser->contents[i].body<<endl;
+                        for (int i = 0; i < loggedInUser->contents.size(); ++i) {
+                            if (loggedInUser->contents[i].type == ContentType::QUESTION) {
+                                hasQuestion = true;
+                                cout << to_string(count) << ". " << loggedInUser->contents[i].body << endl;
                                 count++;
                             }
                         }
+                        if (hasQuestion == false) {
+                            cout << "there is no question!!" << endl;
+                            break;
+                        }
+
+                        cout << "\nd. delete question\ni. Ignore(Continue)" << endl;
+                        cin >> c;
+
+
+                        switch (c) {
+                            case 'd': {//first : my questions
+                                bool hasQuestion = false;
+
+                                int count = 1;
+                                for (int i = 0; i < loggedInUser->contents.size(); ++i) {
+                                    if (loggedInUser->contents[i].type == ContentType::QUESTION) {
+                                        hasQuestion = true;
+
+                                        cout << to_string(count) << ". " << loggedInUser->contents[i].body << endl;
+                                        count++;
+                                    }
+                                }
+                                if (hasQuestion == false) {
+                                    cout << "there is no question!!" << endl;
+                                    break;
+                                }
+
+                                //second : find the index of wanted question
+                                int n; //number of question wanted to delete
+                                while (1) {
+                                    cout << "Enter the number of the question that you want to delete: ";
+                                    cin >> n;
+                                    n--;
+                                    if (n < number_of_questions && n >= 0) {
+                                        break;
+                                    }
+                                    cout << "The number that you have entered is not ok, try again!" << endl;
+                                }
+
+                                //third : find the wanted question
+                                int index = 0;//index of wanted question
+                                for (int i = 0; i < loggedInUser->contents.size(); ++i) {
+                                    if (loggedInUser->contents[i].type == ContentType::QUESTION) {
+                                        if (index == n) {
+                                            loggedInUser->contents.erase(loggedInUser->contents.begin() + index);
+                                            cout << "question deleted!" << endl;
+                                            break;
+                                        } else {
+                                            index++;
+                                        }
+                                    }
+                                }
+                                break;
+                            }
+                            case 'i': {
+                                break;
+                            }
+
+
+                        }
                         break;
                     }
-                    case 'r' :{ //edit questions
+
+                    case 'r' : { //edit questions
                         int count = 1;
-                        for (int i = 0; i < loggedInUser -> contents.size(); ++i) {
-                            if (loggedInUser -> contents[i].type == ContentType::QUESTION){
-                                cout << to_string(count) << ". " <<loggedInUser->contents[i].body<<endl;
+                        for (int i = 0; i < loggedInUser->contents.size(); ++i) {
+                            if (loggedInUser->contents[i].type == ContentType::QUESTION) {
+                                cout << to_string(count) << ". " << loggedInUser->contents[i].body << endl;
                                 count++;
                             }
                         }
@@ -259,7 +333,7 @@ int main() {
                         cout << "Enter the edited question: ";
                         getchar();
                         getline(cin, newQues);
-                        loggedInUser -> contents[number].body = newQues;
+                        loggedInUser->contents[number].body = newQues;
                         cout << "Question successfully updated!" << endl;
                         break;
                     }
@@ -271,7 +345,7 @@ int main() {
                         last_message = "Unknown Input\n";
                         break;
                     }
-                        
+
                 }
             }
         }
