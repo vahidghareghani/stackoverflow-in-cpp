@@ -19,5 +19,8 @@ public:
     Content(string body, ContentType type) : body(body), type(type) {
         visits = 0;
     };
+    void visited() {
+        visits ++;
+    }
 };
 

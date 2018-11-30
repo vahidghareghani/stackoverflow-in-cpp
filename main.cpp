@@ -204,6 +204,11 @@ int main() {
                                     for (int j = 0; j < User::users[i].contents.size(); j++) {
                                         if (User::users[i].contents[j].type == ContentType::QUESTION && index <= n) {
                                             if(index==n){
+                                                User::users[i].contents[j].visited();
+                                                cout << "Question:" << endl;
+                                                cout << User::users[i].contents[j].body << endl;
+                                                cout << "This question has been visited " << User::users[i].contents[j].visits << " time(s)!" << endl;
+                                                cout << "Answers:" << endl;
                                                 for (int k = 0; k < User::users[i].contents[j].relations.size(); k++) {
                                                     if (User::users[i].contents[j].relations[k].destination->type == ContentType::ANSWER){
                                                         cout << k+1 << ". " << User::users[i].contents[j].relations[k].destination->body << endl;
