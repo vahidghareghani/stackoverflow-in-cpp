@@ -46,10 +46,10 @@ int main() {
                             cin >> password;
                             loggedInUser = &User::login(username, password);
                             menuState = MenuState::LOGGED_IN;
+                            Logger::getInstance().log(*loggedInUser);
                         } catch (WrongUsernameOrPasswordException &e) {
                             last_message = e.what();
                         }
-                        Logger::getInstance().log(*loggedInUser);
                         break;
                     }
                     case '2': { // signup
@@ -64,12 +64,12 @@ int main() {
                             loggedInUser = &User::signup(username, password, email);
                             menuState = MenuState::LOGGED_IN;
                             last_message = "User signed up!";
+                            Logger::getInstance().log(*loggedInUser);
                         } catch (UserAlreadyExistsException &e) {
                             last_message = e.what();
                         } catch (EmailAlreadyExistsException &e) {
                             last_message = e.what();
                         }
-                        Logger::getInstance().log(*loggedInUser);
                         break;
                     }
                     case 'e': { // exit
@@ -84,6 +84,15 @@ int main() {
                 break;
             }
             case MenuState::LOGGED_IN: {
+
+                // calculate number of questions of logged in user
+                int number_of_questions = 0;
+                for (int l = 0; l < loggedInUser->contents.size(); l++) {
+                    if (loggedInUser->contents[l].type == ContentType::QUESTION){
+                        number_of_questions++;
+                    }
+                }
+
                 cout << "d. delete account\nl. logout\na. ask\ns. see all questions\nm. my questions\nr. edit question\ne. exit\n";
                 cin >> choice;
                 switch (choice) {
@@ -113,7 +122,7 @@ int main() {
                         loggedInUser->contents.emplace_back(ques, ContentType::QUESTION);
                         break;
                     }
-                    case 's': { //see all questions
+                    case 's': { //see all questions and q = number of all questions
                         int q = 1;
                         for (int i = 0; i < User::users.size(); i++) {
                             for (int j = 0; j < User::users[i].contents.size(); j++) {
@@ -123,7 +132,7 @@ int main() {
                                 }
                             }
                         }
-                        cout << "\na. answer to question\ns. see answers of question\ni. ignore" << endl;
+                        cout << "\na. Answer to question\ns. See answers of question\ni. Ignore(Continue)" << endl;
                         cin >> c;
                         switch (c) {
                             case 'a': {
@@ -146,8 +155,9 @@ int main() {
                                 getchar();
                                 getline(cin, answer);
                                 
-                                //make content.
+                                //make answer content for relationship 1
                                 Content ans(answer, ContentType::ANSWER);
+
                                 //Establishing a relationship 1
                                 int index=0, rel=0;
                                 string question;
@@ -170,6 +180,7 @@ int main() {
                                 }
                                 //Establishing a relationship 2
                                 int t = loggedInUser->contents.size();
+                                // make question content for relationship 2
                                 Content ques(question, ContentType::QUESTION);
                                 loggedInUser->contents.emplace_back(ans);
                                 loggedInUser->contents[t].relations.emplace_back(ContentRelation(&ques, ContentRelationType::ANSWER_TO));
@@ -182,12 +193,13 @@ int main() {
                                     cout << "Enter the number of the question that you want to see: ";
                                     cin >> n;
                                     n--;
-                                    if (n < loggedInUser->contents.size() && n >= 0) {
+                                    if (n < number_of_questions && n >= 0) {
                                         break;
                                     }
                                     cout << "The number that you have entered is not ok, try again!" << endl;
                                 }
                                 int index=0;
+                                // search and find question then print answers
                                 for (int i = 0; i < User::users.size(); i++) {
                                     for (int j = 0; j < User::users[i].contents.size(); j++) {
                                         if (User::users[i].contents[j].type == ContentType::QUESTION) {
@@ -233,7 +245,7 @@ int main() {
                             cout << "Enter the number of the question that you want to edit: ";
                             cin >> number;
                             number--;
-                            if (number < loggedInUser -> contents.size() && number >= 0) {
+                            if (number < number_of_questions && number >= 0) {
                                 break;
                             }
                             cout << "The number that you have entered is not ok, try again!" << endl;
