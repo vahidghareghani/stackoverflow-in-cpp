@@ -210,8 +210,9 @@ int main() {
                                                 User::users[i].contents[j].visited();
                                                 cout << "Question:" << endl;
                                                 cout << User::users[i].contents[j].body << endl;
-                                                cout << "This question has been visited "
-                                                     << User::users[i].contents[j].visits << " time(s)!" << endl;
+                                                cout << "This question has been visited ";
+                                                User::users[i].contents[j].showVisit();
+                                                cout    << " time(s)!" << endl;
                                                 cout << "Answers:" << endl;
                                                 for (int k = 0; k < User::users[i].contents[j].relations.size(); k++) {
                                                     if (User::users[i].contents[j].relations[k].destination->type ==
