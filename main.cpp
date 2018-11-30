@@ -227,7 +227,87 @@ int main() {
                                         }
                                     }
                                 }
-                                break;
+//                                break;
+
+
+
+                                cout<<"\n\n\nd. delete your answer\ni. Ignore(Continue)"<<endl;
+                                cin>>c;
+
+                                switch (c){
+                                    case 'd':
+
+                                        int index=0;
+                                        bool hasAnswer=false ;
+                                        int q=0;
+                                        // search and find question then print answers
+                                        for (int i = 0; i < User::users.size(); i++) {
+                                            for (int j = 0; j < User::users[i].contents.size(); j++) {
+                                                if (User::users[i].contents[j].type == ContentType::QUESTION) {
+                                                    if(index==n){
+                                                        for (int k = 0; k < User::users[i].contents[j].relations.size(); k++) {
+                                                            if (User::users[i].contents[j].relations[k].destination->type == ContentType::ANSWER && User::users[i].username==loggedInUser->username ){
+                                                                 hasAnswer= true ;
+                                                                cout << k+1 << ". " << User::users[i].contents[j].relations[k].destination->body << endl;
+                                                                q++;
+                                                            }
+                                                        }
+                                                    } else{
+                                                        index++;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        if (hasAnswer==false){
+                                            cout<<"you did not answer to this question!!"<<endl;
+                                            break;
+                                        }
+
+
+                                        int u;
+                                        while (1) {
+                                            cout << "Enter the number of answer that you want to delete: ";
+                                            cin >> u;
+                                            u--;
+                                            if (u < q && u >= 0) {
+                                                break;
+                                            }
+                                            cout << "The number that you have entered is not ok, try again!" << endl;
+                                        }
+
+                                        index=0;
+                                        int indexAswer=0;
+
+                                        for (int i = 0; i < User::users.size(); i++) {
+                                            for (int j = 0; j < User::users[i].contents.size(); j++) {
+                                                if (User::users[i].contents[j].type == ContentType::QUESTION) {
+                                                    if(index==n){
+                                                        for (int k = 0; k < User::users[i].contents[j].relations.size(); k++) {
+                                                            if (User::users[i].contents[j].relations[k].destination->type == ContentType::ANSWER && User::users[i].username==loggedInUser->username && indexAswer==u ){
+
+                                                                User::users[i].contents[j].relations.erase(User::users[i].contents[j].relations.begin() + indexAswer);
+                                                                cout << "answer deleted!" << endl;
+                                                                break;
+
+                                                            } else{
+                                                                indexAswer++;
+                                                            }
+                                                        }
+                                                    } else{
+                                                        index++;
+                                                    }
+                                                }
+                                            }
+                                        }
+
+
+
+                                }
+
+
+
+
+
                             }
 
 
