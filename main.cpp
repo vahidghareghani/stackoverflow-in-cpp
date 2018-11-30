@@ -163,7 +163,7 @@ int main() {
                                 string question;
                                 for (int i = 0; i < User::users.size(); i++) {
                                     for (int j = 0; j < User::users[i].contents.size(); j++) {
-                                        if (User::users[i].contents[j].type == ContentType::QUESTION) {
+                                        if (User::users[i].contents[j].type == ContentType::QUESTION && index <= num) {
                                             if(index==num){
                                                 question = User::users[i].contents[j].body;
                                                 User::users[i].contents[j].relations.emplace_back(ContentRelation(&ans, ContentRelationType::ANSWER_TO));
@@ -193,7 +193,7 @@ int main() {
                                     cout << "Enter the number of the question that you want to see: ";
                                     cin >> n;
                                     n--;
-                                    if (n < number_of_questions && n >= 0) {
+                                    if (n < q && n >= 0) {
                                         break;
                                     }
                                     cout << "The number that you have entered is not ok, try again!" << endl;
@@ -202,7 +202,7 @@ int main() {
                                 // search and find question then print answers
                                 for (int i = 0; i < User::users.size(); i++) {
                                     for (int j = 0; j < User::users[i].contents.size(); j++) {
-                                        if (User::users[i].contents[j].type == ContentType::QUESTION) {
+                                        if (User::users[i].contents[j].type == ContentType::QUESTION && index <= n) {
                                             if(index==n){
                                                 for (int k = 0; k < User::users[i].contents[j].relations.size(); k++) {
                                                     if (User::users[i].contents[j].relations[k].destination->type == ContentType::ANSWER){
