@@ -7,7 +7,7 @@
 
 #ifdef _WIN32
 #define CLEAR "cls"
-#else //In any other OS
+#else //In any other OSss
 #define CLEAR "clear"
 #endif
 
@@ -222,6 +222,7 @@ int main() {
                                                              << endl;
                                                     }
                                                 }
+                                                break;
                                             } else {
                                                 index++;
                                             }
